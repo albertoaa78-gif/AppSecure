@@ -40,7 +40,7 @@ export function Navigation() {
             <Shield className="w-4 h-4 text-primary" />
           </div>
           <span className="font-display text-lg font-light tracking-[0.3em] uppercase text-white">
-            Analytica <span className="font-bold text-primary">S.</span>
+            Analytica <span className="font-bold text-primary">Secure</span>
           </span>
         </Link>
 
