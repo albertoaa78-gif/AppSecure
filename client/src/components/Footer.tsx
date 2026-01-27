@@ -10,7 +10,7 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <Shield className="w-6 h-6 text-primary" />
               <span className="font-display text-lg tracking-widest uppercase text-white">
-                Analytica
+                Analytica Secure
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
