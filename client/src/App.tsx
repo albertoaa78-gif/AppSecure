@@ -9,7 +9,8 @@ import Services from "@/pages/Services";
 import Technology from "@/pages/Technology";
 import Contact from "@/pages/Contact";
 
-// GitHub Pages requires hash-based routing
+// GitHub Pages requiere hash-based routing
+// base debe ser "/#/" para que wouter funcione correctamente con URLs como /#/services
 function AppRouter() {
   return (
     <Switch>

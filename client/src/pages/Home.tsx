@@ -5,13 +5,8 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Shield, Lock, Eye, CheckCircle2 } from "lucide-react";
 
-// Intenta importar el video; si no existe, usa undefined
-let heroBg: string | undefined;
-try {
-  heroBg = new URL("@/assets/videos/hero-seamless.mp4", import.meta.url).href;
-} catch {
-  heroBg = undefined;
-}
+// El video es opcional - si no carga, se muestra solo el fondo oscuro
+// Para GitHub Pages, la URL relativa se maneja automáticamente
 
 export default function Home() {
   return (
@@ -20,18 +15,10 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video or Gradient with Overlay */}
+        {/* Background with Overlay */}
         <div className="absolute inset-0 z-0">
-          {heroBg ? (
-            <video
-              src={heroBg}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover scale-105"
-            />
-          ) : null}
+          {/* Video opcional - comentado para evitar errores en build */}
+          {/* <video autoPlay loop muted playsInline className="w-full h-full object-cover scale-105" /> */}
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/20" />
         </div>
