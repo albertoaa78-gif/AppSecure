@@ -9,13 +9,7 @@ import Services from "@/pages/Services";
 import Technology from "@/pages/Technology";
 import Contact from "@/pages/Contact";
 
-// Determine the base path for the router
-const getBasePath = () => {
-  // Check if deployed to GitHub Pages
-  const basePath = import.meta.env.BASE_URL;
-  return basePath && basePath !== "/" ? basePath : "/";
-};
-
+// GitHub Pages requires hash-based routing
 function AppRouter() {
   return (
     <Switch>
@@ -30,7 +24,7 @@ function AppRouter() {
 
 function App() {
   return (
-    <Router base={getBasePath()}>
+    <Router base="#/">
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
