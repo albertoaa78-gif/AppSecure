@@ -24,7 +24,7 @@ function AppRouter() {
 
 function App() {
   return (
-    <Router base="#/">
+    <Router base="/#/">
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
