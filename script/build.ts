@@ -38,6 +38,13 @@ async function buildAll() {
   console.log("building client...");
   await viteBuild();
   
+  // Remove favicon.png to avoid conflict with favicon.svg
+  try {
+    await rm("dist/public/favicon.png", { force: true });
+  } catch (e) {
+    // Ignore if file doesn't exist
+  }
+  
   // Create .nojekyll for GitHub Pages
   await writeFile("dist/public/.nojekyll", "");
   console.log(".nojekyll created for GitHub Pages");

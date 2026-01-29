@@ -7,32 +7,32 @@ export function useCreateInquiry() {
   
   return useMutation({
     mutationFn: async (data: InsertInquiry) => {
-      // Validate data before sending using the shared schema if possible, 
-      // otherwise relying on backend validation response
-      const res = await fetch(api.inquiries.create.path, {
-        method: api.inquiries.create.method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        if (res.status === 400) {
-          const error = api.inquiries.create.responses[400].parse(await res.json());
-          throw new Error(error.message);
-        }
-        throw new Error("Failed to submit inquiry");
-      }
-      return api.inquiries.create.responses[201].parse(await res.json());
+      // Para GitHub Pages (sitio estático), guardar en localStorage
+      // En producción con servidor, esto sería reemplazado por fetch real
+      const inquiries = JSON.parse(localStorage.getItem("inquiries") || "[]");
+      const newInquiry = {
+        id: String(Date.now()),
+        ...data,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      inquiries.push(newInquiry);
+      localStorage.setItem("inquiries", JSON.stringify(inquiries));
+      
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      return newInquiry;
     },
     onSuccess: () => {
       toast({
-        title: "Inquiry Received",
-        description: "A security consultant will contact you shortly.",
+        title: "Consulta Recibida",
+        description: "Un consultor de seguridad se pondrá en contacto pronto.",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Submission Failed",
+        title: "Error en el Envío",
         description: error.message,
         variant: "destructive",
       });
