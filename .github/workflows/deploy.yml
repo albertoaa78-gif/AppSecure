@@ -22,9 +22,12 @@ jobs:
         run: npm ci
 
       - name: Build for GitHub Pages (Client Only)
+        env:
+          NODE_ENV: production
+          VITE_BASE: /AppSecure/
         run: |
           rm -rf dist docs node_modules/.vite
-          VITE_BASE=/AppSecure/ npx vite build --mode production
+          npx vite build --mode production
           rm -rf docs
           mkdir -p docs
           cp -r dist/public/* docs/

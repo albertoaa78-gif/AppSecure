@@ -9,17 +9,18 @@ export default defineConfig({
   plugins: [
     react(),
     runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-          await import("@replit/vite-plugin-dev-banner").then((m) =>
-            m.devBanner(),
-          ),
-        ]
-      : []),
+    // Replit plugins disabled for GitHub Pages build compatibility
+    // ...(process.env.NODE_ENV !== "production" &&
+    // process.env.REPL_ID !== undefined
+    //   ? [
+    //       await import("@replit/vite-plugin-cartographer").then((m) =>
+    //         m.cartographer(),
+    //       ),
+    //       await import("@replit/vite-plugin-dev-banner").then((m) =>
+    //         m.devBanner(),
+    //       ),
+    //     ]
+    //   : []),
   ],
   resolve: {
     alias: {
