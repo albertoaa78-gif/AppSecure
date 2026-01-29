@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
     "build": "tsx script/build.ts",
-    "build:gh": "VITE_BASE=/AppSecure/ npm run build && rm -rf docs && cp -r dist/public docs",
+    "build:gh": "VITE_BASE=/AppSecure/ npx vite build --mode production && rm -rf docs && mkdir -p docs && cp -r dist/public/* docs/ && touch docs/.nojekyll",
     "prepare:gh": "npm run build:gh",
     "start": "NODE_ENV=production node dist/index.cjs",
     "check": "tsc",
