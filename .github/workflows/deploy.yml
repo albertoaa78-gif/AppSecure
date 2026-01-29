@@ -18,32 +18,14 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: |
-          npm install --legacy-peer-deps --no-audit --no-fund
+        run: npm install --legacy-peer-deps
 
-      - name: Build for GitHub Pages (Client Only)
+      - name: Build
         env:
           NODE_ENV: production
           VITE_BASE: /AppSecure/
         run: |
-          rm -rf dist docs node_modules/.vite
-          npx vite build --mode production
-          rm -rf docs
-          mkdir -p docs
-          cp -r dist/public/* docs/
-          touch docs/.nojekyll
-          # Create 404.html for SPA routing
-          cat > docs/404.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <script>
-                  window.location = '/AppSecure/index.html#' + window.location.pathname.replace(/^\/AppSecure/, '');
-              </script>
-          </head>
-          </html>
-          EOF
-          echo "✅ Build completado"
+          npm run build:gh
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -51,4 +33,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
+          cname: false
+
 
