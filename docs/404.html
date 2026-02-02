@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        window.location = '/AppSecure/index.html#' + window.location.pathname.replace(/^\/AppSecure/, '');
-    </script>
+  <meta charset="utf-8">
+  <script>
+    // Redirigir todas las rutas 404 a index.html para que wouter maneje el routing
+    window.location.replace('/AppSecure/index.html#' + window.location.pathname.replace(/^\/AppSecure/, ''));
+  </script>
 </head>
+<body>
+  <p>Redirigiendo...</p>
+</body>
 </html>

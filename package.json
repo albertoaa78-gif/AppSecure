@@ -4,13 +4,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "tsx script/build.ts",
-    "build:gh": "VITE_BASE=/AppSecure/ npx vite build --mode production && rm -rf docs && mkdir -p docs && cp -r dist/public/* docs/ && touch docs/.nojekyll && echo '<!DOCTYPE html><html><head><script>window.location=\"/AppSecure/index.html#\"+window.location.pathname.replace(/^\\/AppSecure/,\"\");</script></head></html>' > docs/404.html",
-    "prepare:gh": "npm run build:gh",
-    "start": "NODE_ENV=production node dist/index.cjs",
-    "check": "tsc",
-    "db:push": "drizzle-kit push"
+    "dev": "vite --host",
+    "build": "vite build",
+    "build:gh": "VITE_BASE=/AppSecure/ vite build && rm -rf docs && mkdir -p docs && cp -r dist/* docs/ && touch docs/.nojekyll",
+    "preview": "vite preview",
+    "check": "tsc"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -110,6 +108,6 @@
     }
   },
   "optionalDependencies": {
-    "bufferutil": "^4.1.0",
+    "bufferutil": "^4.1.0"
   }
 }
