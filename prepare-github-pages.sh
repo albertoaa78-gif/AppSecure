@@ -1,55 +1,65 @@
 #!/bin/bash
-set -e
+set -euo pipefail
+
+ROOT="/workspaces/AppSecure"
+BRANCH="github-pages-static"
+COMMIT_MSG="chore(pages): update docs for GitHub Pages"
 
 echo "🔨 Preparando AppSecure para GitHub Pages..."
-cd /workspaces/AppSecure
+cd "$ROOT"
 
-# Ejecutar build para GitHub Pages
-echo "📦 Construyendo con VITE_BASE=/AppSecure/..."
-VITE_BASE=/AppSecure/ npm run build
+echo "📦 Compilando con VITE_BASE=/AppSecure/"
+export VITE_BASE="/AppSecure/"
+npm run build
 
-# Crear directorio docs
-echo "📁 Creando directorio docs..."
+echo "📁 Regenerando docs/ desde dist/"
 rm -rf docs
 mkdir -p docs
+cp -r dist/* docs/ || cp -r dist/public/* docs/ || true
 
-# Copiar archivos compilados
-echo "📋 Copiando archivos compilados..."
-cp -r dist/* docs/
-
-# Crear .nojekyll
-echo "📝 Creando .nojekyll..."
+echo "📝 Asegurando .nojekyll y 404.html"
 touch docs/.nojekyll
+cat > docs/404.html <<'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Redirecting...</title>
+    <script>
+        const path = window.location.pathname.replace('/AppSecure', '');
+        window.location = '/AppSecure/index.html#' + path + window.location.search + window.location.hash;
+    </script>
+    <noscript>Redirecting...</noscript>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>
+EOF
 
-# Verificar que los archivos están presentes
-echo ""
-echo "✅ Verificación final:"
-echo ""
-echo "Archivos en docs/:"
-ls -lh docs/ | grep -v "^total" | grep -v "^d" | awk '{print "  " $9 " (" $5 ")"}'
-echo ""
-echo "Assets compilados:"
-ls -lh docs/assets/ | grep -v "^total" | awk '{print "  " $9 " (" $5 ")"}'
-echo ""
+echo "✅ Archivos preparados en docs/"
+ls -la docs | sed -n '1,200p'
 
-# Verificar URLs en el index.html
-echo "🔗 Verificando URLs en index.html:"
-if grep -q "favicon" docs/index.html; then
-    echo "  ✅ Favicon referenciado"
-fi
-if grep -q "assets" docs/index.html; then
-    echo "  ✅ Assets CSS y JS presentes"
-fi
-if grep -q "/AppSecure/" docs/index.html; then
-    echo "  ✅ URLs con /AppSecure/ base"
+echo "🔀 Comprobando rama git: $BRANCH"
+# Crear o cambiar a la rama localmente
+if git show-ref --verify --quiet refs/heads/$BRANCH; then
+    git checkout $BRANCH
+else
+    git checkout -b $BRANCH
 fi
 
-echo ""
-echo "🚀 GitHub Pages está listo:"
-echo "   Directorio: /docs"
-echo "   URL: https://albertoaa78-gif.github.io/AppSecure/#/"
-echo ""
-echo "📝 Próximos pasos:"
-echo "   git add docs/"
-echo "   git commit -m 'build: generate GitHub Pages deploy'"
-echo "   git push origin github-pages-static"
+echo "🧾 Añadiendo y commiteando cambios en $BRANCH"
+git add -A docs || true
+if git diff --staged --quiet; then
+    echo "No hay cambios nuevos para commitear."
+else
+    git commit -m "$COMMIT_MSG"
+fi
+
+echo "⬆️ Pushing a origin/$BRANCH"
+git push -u origin $BRANCH
+
+echo "✅ Push completado a origin/$BRANCH"
+echo "🚀 Si GitHub Pages está configurado para publicar desde esta rama, la web se actualizará en unos minutos."
+echo "Si prefieres publicar desde la rama main (/docs), haz merge de esta rama a main o cambia la configuración de Pages en GitHub."

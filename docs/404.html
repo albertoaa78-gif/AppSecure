@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Redirecting...</title>
     <script>
-        // Redirigir 404s a index.html para que Wouter maneje las rutas
         const path = window.location.pathname.replace('/AppSecure', '');
-        window.location = '/AppSecure/index.html#' + path;
+        window.location = '/AppSecure/index.html#' + path + window.location.search + window.location.hash;
     </script>
+    <noscript>Redirecting...</noscript>
 </head>
 <body>
     <p>Redirecting...</p>
