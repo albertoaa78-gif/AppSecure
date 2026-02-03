@@ -1,8 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@shared/routes";
+import { useState, useEffect } from "react";
 
-// Datos estáticos para GitHub Pages (sin servidor)
-const STATIC_SERVICES = [
+interface Service {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Datos estáticos para sitio estático
+const STATIC_SERVICES: Service[] = [
   {
     id: "1",
     name: "Vigilancia de Perímetro",
@@ -30,11 +38,26 @@ const STATIC_SERVICES = [
 ];
 
 export function useServices() {
-  return useQuery({
-    queryKey: [api.services.list.path],
-    queryFn: async () => {
-      // Retornar datos estáticos para sitio estático
-      return STATIC_SERVICES;
-    },
-  });
+  const [data, setData] = useState<Service[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        setIsLoading(true);
+        // Simular delay de red
+        await new Promise(resolve => setTimeout(resolve, 300));
+        setData(STATIC_SERVICES);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error("Error desconocido"));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
+
+  return { data, isLoading, error };
 }

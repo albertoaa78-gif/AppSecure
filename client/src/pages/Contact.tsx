@@ -1,14 +1,23 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { SectionHeading } from "@/components/SectionHeading";
-import { useCreateInquiry } from "@/hooks/use-inquiries";
+import { useCreateInquiry, type InsertInquiry } from "@/hooks/use-inquiries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { insertInquirySchema, type InsertInquiry } from "@shared/routes";
+import { z } from "zod";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
+
+// Schema de validación para inquiries
+const insertInquirySchema = z.object({
+  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+  email: z.string().email("Email inválido"),
+  phone: z.string().min(7, "Teléfono inválido"),
+  serviceType: z.string().optional(),
+  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
+});
 
 export default function Contact() {
   const createInquiry = useCreateInquiry();
@@ -19,6 +28,7 @@ export default function Contact() {
       name: "",
       email: "",
       phone: "",
+      serviceType: "",
       message: "",
     },
   });
