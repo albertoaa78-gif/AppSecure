@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Redirecting...</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/AppSecure/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytica Secure - Seguridad Perimetral IA</title>
     <script>
-        // Redirigir 404s a index.html para que Wouter maneje las rutas
-        const path = window.location.pathname.replace('/AppSecure', '');
-        window.location = '/AppSecure/index.html#' + path;
+      // Redirect to index.html for SPA routing
+      sessionStorage.redirect = location.href;
     </script>
-</head>
-<body>
-    <p>Redirecting...</p>
-</body>
+    <meta http-equiv="refresh" content="0;url=/AppSecure/" />
+  </head>
+  <body>
+    Redirecting...
+  </body>
 </html>
